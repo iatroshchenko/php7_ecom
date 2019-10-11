@@ -5,10 +5,15 @@ define('ROOT', dirname(__DIR__));
 define('WEB', ROOT . '/public');
 define('APP', ROOT . '/app');
 define('VENDOR', ROOT . '/vendor');
-define('CORE', ROOT . '/vendor/myshop/core');
-define('LIBS', ROOT . '/vendor/myshop/core/libs');
-define('CACHE', ROOT . '/storage/cache');
+define('CORE', ROOT . '/core');
+define('STORAGE', ROOT . '/storage');
 define('CONF', ROOT . '/config');
+
+// templates
+define('RESOURCES', ROOT . '/resources');
+define('VIEWS', RESOURCES . '/views');
+define('ERROR_TEMPLATES', VIEWS . '/error');
+
 define('LAYOUT', 'default');
 
 // getting app path

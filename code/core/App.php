@@ -1,23 +1,38 @@
 <?php
     namespace Core;
 
-    use Core\Registry as Registry;
-
 	class App {
 
-        public static $app;
+        private static $registry;
 
 		public function __construct ()
         {
-			$query = trim($_SERVER['QUERY_STRING'], '/');
+            // Error handler power on
+            new ErrorHandler();
+
+            // starting session
 			session_start();
-			var_dump($query);
-			self::$app = Registry::getInstance();
+
+			// setting application props container
+			self::$registry = Registry::getInstance();
+
+			// setting application props (from config/params.php)
+			$this->setParams();
 		}
 
-		public static function getApp ()
+		private function setParams()
         {
-            return self::$app;
+            $params = require_once CONF . '/params.php';
+            if (!empty($params)) {
+                foreach ($params as $k => $v) {
+                    self::$registry->setProperty($k, $v);
+                }
+            }
+        }
+
+		public static function getRegistry ()
+        {
+            return self::$registry;
         }
 	}
 

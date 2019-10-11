@@ -10,17 +10,17 @@ class Registry
 
     private static $props = [];
 
-    public static function setProp ($key, $val)
-    {
-        self::$props[$key] = $val;
-    }
-
-    public static function getProp ($key)
+    public static function getProperty ($key)
     {
         return self::$props[$key] ?? null;
     }
 
-    public static function getProps ()
+    public static function setProperty ($key, $val)
+    {
+        self::$props[$key] = $val;
+    }
+
+    public static function all ()
     {
         return self::$props;
     }
