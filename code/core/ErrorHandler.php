@@ -7,6 +7,9 @@ class ErrorHandler
 {
     public function __construct()
     {
+        $logFile = STORAGE . '/logs/error.log';
+        if(!is_file($logFile)) file_put_contents($logFile, 'This is an error log file' . PHP_EOL);
+
         error_reporting(E_ALL);
         set_error_handler(
             [$this, 'handleError'],
