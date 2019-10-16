@@ -256,7 +256,7 @@
         <h1>404</h1>
         <h2>error</h2>
         <p>
-            This is probably the page you're not looking for ...
+            <b><?= $errorText; ?></b>
         </p>
     </div>
     <div class="stack-container">

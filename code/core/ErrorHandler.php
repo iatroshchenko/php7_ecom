@@ -50,7 +50,8 @@ class ErrorHandler
     private function display ($errorCode, $errorText, $errorFile, $errorLine, $responseCode = 404)
     {
         http_response_code($responseCode);
-        if ($responseCode == 404 && !DEBUG) {
+//        if ($responseCode == 404 && !DEBUG) {
+        if ($responseCode == 404) {
             require ERROR_TEMPLATES . '/404.php';
         }
         if (DEBUG) {

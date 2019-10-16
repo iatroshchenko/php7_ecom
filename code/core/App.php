@@ -18,6 +18,9 @@
 
 			// setting application props (from config/params.php)
 			$this->setParams();
+
+			// send user to the page
+            Route::direct(REQUESTED_ROUTE);
 		}
 
 		private function setParams()
