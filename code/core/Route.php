@@ -4,8 +4,15 @@ namespace Core;
 
 use Error;
 
+/**
+ * Class Route
+ * @package Core
+ */
 class Route
 {
+    /**
+     * Empty route params
+     */
     const EMPTY_ROUTE = [
         'controller' => null,
         'view' => null,
@@ -13,24 +20,43 @@ class Route
         'prefix' => null
     ];
 
+    /**
+     * @var array
+     */
     private static $routes = [];
+    /**
+     * @var array
+     */
     private static $currentRoute = [];
 
+    /**
+     * @param $regexp
+     * @param array $array
+     */
     public static function add ($regexp, array $array = [])
     {
         self::$routes[$regexp] = $array;
     }
 
+    /**
+     * @return array
+     */
     public static function all()
     {
         return self::$routes;
     }
 
+    /**
+     * @return array
+     */
     public static function getCurrentRoute()
     {
         return self::$currentRoute;
     }
 
+    /**
+     * @param $path
+     */
     public static function handle($path)
     {
         $route = self::getRoute($path);
@@ -42,6 +68,9 @@ class Route
         }
     }
 
+    /**
+     * Directs user to action
+     */
     public static function direct()
     {
         $route = self::getCurrentRoute();
@@ -57,6 +86,11 @@ class Route
         $controller->$action();
     }
 
+    /**
+     * @param $path
+     * @return array|bool
+     * Parses route data from user request
+     */
     public static function getRoute ($path)
     {
         foreach (self::$routes as $pattern => $route) {
