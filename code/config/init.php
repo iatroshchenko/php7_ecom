@@ -33,3 +33,6 @@ define('ADMIN_URL', APP_URL . '/admin');
 define('ROUTES', ROOT . '/routes');
 require_once(ROUTES . '/web.php');
 require_once(ROUTES . '/default.php');
+
+// Namespaces
+define('CONTROLLERS_NAMESPACE', '\App\Controllers');

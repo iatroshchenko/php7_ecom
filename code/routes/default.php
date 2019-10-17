@@ -9,7 +9,9 @@ Route::add('#^admin$#', [
     'prefix' => 'admin'
 ]);
 
-Route::add('#^admin/?(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$#');
+Route::add('#^admin/?(?P<controller>[a-z-]+)/?(?P<action>[a-z-]+)?$#', [
+    'prefix' => 'admin'
+]);
 
 // client default routes
 Route::add('#^$#', [

@@ -20,7 +20,7 @@
 			$this->setParams();
 
 			// send user to the page
-            Route::direct(REQUESTED_ROUTE);
+            Route::handle(REQUESTED_ROUTE);
 		}
 
 		private function setParams()

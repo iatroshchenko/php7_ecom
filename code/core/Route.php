@@ -2,41 +2,80 @@
 
 namespace Core;
 
+use Error;
+
 class Route
 {
+    const EMPTY_ROUTE = [
+        'controller' => null,
+        'view' => null,
+        'action' => null,
+        'prefix' => null
+    ];
+
     private static $routes = [];
-    private static $current = [];
+    private static $currentRoute = [];
 
     public static function add ($regexp, array $array = [])
     {
         self::$routes[$regexp] = $array;
     }
 
-    public static function all ()
+    public static function all()
     {
         return self::$routes;
     }
 
-    public static function current ()
+    public static function getCurrentRoute()
     {
-        return self::$current;
+        return self::$currentRoute;
     }
 
-    public static function direct ($path)
+    public static function handle($path)
     {
-        if (self::hasRoute($path)) {
-            // TODO
+        $route = self::getRoute($path);
+        if ($route) {
+            self::$currentRoute = $route;
+            self::direct();
         } else {
-            throw new \Error("This probably is not the page you're looking for ...", 404);
+            throw new Error("This probably is not the page you're looking for ...", 404);
         }
     }
 
-    public static function hasRoute ($path)
+    public static function direct()
+    {
+        $route = self::getCurrentRoute();
+        $controllerClass = CONTROLLERS_NAMESPACE . '\\'
+            . ($route['prefix'] ? $route['prefix'] . '\\' : '')
+            . ($route['controller'] ? $route['controller'] . 'Controller' : '');
+
+        if (!class_exists($controllerClass)) throw new Error("No such controller: $controllerClass");
+        $controller = new $controllerClass($route);
+        $action = $route['action'] . 'Action';
+
+        if (!method_exists($controller, $action)) throw new Error("Method wasn't found: $controllerClass:$action");
+        $controller->$action();
+    }
+
+    public static function getRoute ($path)
     {
         foreach (self::$routes as $pattern => $route) {
             if (preg_match($pattern, $path, $matches)) {
-                dump($matches);
-                return true;
+                $matches = array_filter($matches, function ($item) {
+                   return is_string($item);
+                }, ARRAY_FILTER_USE_KEY);
+
+                $routeIntersect = array_intersect_key($route, self::EMPTY_ROUTE);
+                $matchesIntersect = array_intersect_key($matches, self::EMPTY_ROUTE);
+
+                $result = array_merge($routeIntersect, $matchesIntersect);
+                $result = array_merge(self::EMPTY_ROUTE, $result);
+
+                $result['action'] = $result['action'] ?? 'index';
+                $result['controller'] = ucwords($result['controller']);
+                if (isset($result['prefix'])) $result['prefix'] = ucwords($result['prefix']);
+
+                return $result;
             }
         }
         return false;
