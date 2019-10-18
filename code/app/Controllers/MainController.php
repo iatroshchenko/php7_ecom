@@ -3,12 +3,14 @@
 
 namespace App\Controllers;
 
-use Core\Base\Controller;
-
-class MainController extends Controller
+class MainController extends AppController
 {
     public function indexAction()
     {
-        dd($this->route);
+        $this->setTemplate('myview');
+        $a = '123';
+        $b = '223';
+        $c = '243';
+        $this->setData(compact(['a', 'b', 'c']));
     }
 }

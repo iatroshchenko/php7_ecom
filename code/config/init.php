@@ -16,7 +16,8 @@ define('RESOURCES', ROOT . '/resources');
 define('VIEWS', RESOURCES . '/views');
 define('ERROR_TEMPLATES', VIEWS . '/error');
 
-define('LAYOUT', 'default');
+define('DEFAULT_LAYOUT', 'default');
+define('DEFAULT_TEMPLATE', 'index');
 
 // getting requested route
 define('REQUESTED_ROUTE', trim($_SERVER['REQUEST_URI'], '/'));

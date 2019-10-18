@@ -15,7 +15,7 @@ class Route
      */
     const EMPTY_ROUTE = [
         'controller' => null,
-        'view' => null,
+        'template' => null,
         'action' => null,
         'prefix' => null
     ];
@@ -73,17 +73,25 @@ class Route
      */
     public static function direct()
     {
-        $route = self::getCurrentRoute();
+        $currentRoute = self::getCurrentRoute();
         $controllerClass = CONTROLLERS_NAMESPACE . '\\'
-            . ($route['prefix'] ? $route['prefix'] . '\\' : '')
-            . ($route['controller'] ? $route['controller'] . 'Controller' : '');
+            . ($currentRoute['prefix'] ? $currentRoute['prefix'] . '\\' : '')
+            . ($currentRoute['controller'] ? $currentRoute['controller'] . 'Controller' : '');
 
+        // check if class exists
         if (!class_exists($controllerClass)) throw new Error("No such controller: $controllerClass");
-        $controller = new $controllerClass($route);
-        $action = $route['action'] . 'Action';
 
+        // if so, setting the action
+        $controller = new $controllerClass($currentRoute);
+        $action = $currentRoute['action'] . 'Action';
+
+        // checking if method exists
         if (!method_exists($controller, $action)) throw new Error("Method wasn't found: $controllerClass:$action");
+
+        // if so, rendering the view
         $controller->$action();
+        $view = $controller->getView();
+        $view->render();
     }
 
     /**
