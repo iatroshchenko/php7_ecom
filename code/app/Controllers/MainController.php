@@ -3,11 +3,12 @@
 
 namespace App\Controllers;
 
+use Core\Base\Controller;
 
-class MainController
+class MainController extends Controller
 {
     public function indexAction()
     {
-        echo 'This is an index action!';
+        dd($this->route);
     }
 }
