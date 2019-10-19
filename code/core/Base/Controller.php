@@ -3,6 +3,7 @@
 
 namespace Core\Base;
 
+use Core\Support\Meta;
 
 abstract class Controller
 {
@@ -10,6 +11,8 @@ abstract class Controller
     protected $view;
     protected $data;
     protected $template;
+    protected $layout = DEFAULT_LAYOUT;
+    protected $meta;
 
     public function getRoute()
     {
@@ -46,5 +49,25 @@ abstract class Controller
     public function setTemplate(string $templateFileName)
     {
         $this->template = $templateFileName;
+    }
+
+    public function getLayout()
+    {
+        return $this->layout;
+    }
+
+    public function setLayout(string $layoutFileName)
+    {
+        $this->layout = $layoutFileName;
+    }
+
+    public function setMeta(Meta $meta)
+    {
+        $this->meta = $meta;
+    }
+
+    public function getMeta()
+    {
+        return $this->meta;
     }
 }

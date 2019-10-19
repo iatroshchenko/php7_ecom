@@ -14,6 +14,7 @@ define('CONF', ROOT . '/config');
 // templates
 define('RESOURCES', ROOT . '/resources');
 define('VIEWS', RESOURCES . '/views');
+define('LAYOUTS', VIEWS . '/layouts');
 define('ERROR_TEMPLATES', VIEWS . '/error');
 
 define('DEFAULT_LAYOUT', 'default');
