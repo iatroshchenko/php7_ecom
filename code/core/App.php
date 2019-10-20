@@ -4,11 +4,15 @@
 	class App {
 
         private static $registry;
+        private static $db;
 
 		public function __construct ()
         {
             // Error handler power on
             new ErrorHandler();
+
+            // Connect to DB
+            self::$db = DB::getInstance();
 
             // starting session
 			session_start();

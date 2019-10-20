@@ -29,7 +29,7 @@ class ErrorHandler
         );
     }
 
-    public function handleException(\Error $e)
+    public function handleException(\Exception $e)
     {
         $this->log($e->getFile(), $e->getLine(), $e->getMessage());
         $this->display(

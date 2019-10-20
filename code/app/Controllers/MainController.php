@@ -4,6 +4,7 @@
 namespace App\Controllers;
 
 use Core\Support\Meta;
+use RedBeanPHP\R;
 
 class MainController extends AppController
 {
@@ -17,9 +18,8 @@ class MainController extends AppController
         $this->setMeta($meta);
 
         $this->setTemplate('myview');
-        $a = '123';
-        $b = '223';
-        $c = '243';
-        $this->setData(compact(['a', 'b', 'c']));
+
+        $posts = R::findAll('posts');
+        $this->setData(compact('posts'));
     }
 }

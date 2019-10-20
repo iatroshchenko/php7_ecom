@@ -5,7 +5,9 @@
 			"App\\": "app"
 		}
 	},
-	"require": {},
+	"require": {
+		"gabordemooij/redbean": "dev-master"
+	},
 	"require-dev": {
 		"symfony/var-dumper": "^4.3"
 	}

@@ -1,6 +1,6 @@
-<?php
-
-echo 'This is my test view!';
-echo $a;
-echo $b;
-echo $c;
+<? foreach ($posts as $post): ?>
+    <div class="post">
+        <h3> <?= $post->title; ?></h3>
+        <p> <?= $post->body; ?></p>
+    </div>
+<? endforeach; ?>
