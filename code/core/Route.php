@@ -55,11 +55,12 @@ class Route
     }
 
     /**
-     * @param $path
+     * @param $url
      */
-    public static function handle($path)
+    public static function handle($url)
     {
-        $route = self::getRoute($path);
+        $url = self::removeQueryString($url);
+        $route = self::getRoute($url);
         if ($route) {
             self::$currentRoute = $route;
             self::direct();
@@ -73,7 +74,7 @@ class Route
      */
     public static function direct()
     {
-        $currentRoute = self::getCurrentRoute();
+        $currentRoute = self::$currentRoute;
         $controllerClass = CONTROLLERS_NAMESPACE . '\\'
             . ($currentRoute['prefix'] ? $currentRoute['prefix'] . '\\' : '')
             . ($currentRoute['controller'] ? $currentRoute['controller'] . 'Controller' : '');
@@ -121,6 +122,12 @@ class Route
             }
         }
         return false;
+    }
+
+    private static function removeQueryString($url)
+    {
+        $params = parse_url($url);
+        return $params['path'] ?? '';
     }
 
 }
