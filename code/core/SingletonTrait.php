@@ -11,4 +11,8 @@ trait SingletonTrait
     public static function getInstance () {
         return self::$instance ?? self::$instance = new self();
     }
+
+    private function __construct()
+    {
+    }
 }

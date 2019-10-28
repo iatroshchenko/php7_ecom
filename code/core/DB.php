@@ -3,6 +3,7 @@
 
 namespace Core;
 use \RedBeanPHP\R as R;
+use Error;
 
 class DB
 {

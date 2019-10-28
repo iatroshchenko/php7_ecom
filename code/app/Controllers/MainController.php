@@ -1,10 +1,10 @@
 <?php
 
-
 namespace App\Controllers;
 
 use Core\Support\Meta;
 use RedBeanPHP\R;
+use Core\App;
 
 class MainController extends AppController
 {
@@ -21,5 +21,7 @@ class MainController extends AppController
 
         $posts = R::findAll('posts');
         $this->setData(compact('posts'));
+
+        dd(App::instance()->params());
     }
 }

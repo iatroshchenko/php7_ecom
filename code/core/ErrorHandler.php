@@ -3,6 +3,8 @@
 
 namespace Core;
 
+use Throwable;
+
 class ErrorHandler
 {
     public function __construct()
@@ -10,11 +12,12 @@ class ErrorHandler
         $logFile = STORAGE . '/logs/error.log';
         if(!is_file($logFile)) file_put_contents($logFile, 'This is an error log file' . PHP_EOL);
 
-        error_reporting(E_ALL);
-        set_error_handler(
-            [$this, 'handleError'],
-            E_ALL
-        );
+        $level = E_ALL;
+        error_reporting($level);
+        set_error_handler([
+            $this,
+            'handleError'
+        ], $level);
         set_exception_handler([
             $this,
             'handleException'
@@ -29,7 +32,7 @@ class ErrorHandler
         );
     }
 
-    public function handleException(\Exception $e)
+    public function handleException(Throwable $e)
     {
         $this->log($e->getFile(), $e->getLine(), $e->getMessage());
         $this->display(

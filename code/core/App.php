@@ -1,45 +1,58 @@
 <?php
     namespace Core;
 
-	class App {
+    use Error;
 
-        private static $registry;
+    class App {
+        private static $app;
+
+	    private $container;
+        private $params;
+
         private static $db;
 
-		public function __construct ()
+        public static function start()
         {
-            // Error handler power on
+            self::$app = new self();
+            Route::handle(REQUESTED_ROUTE);
+        }
+
+        public static function instance()
+        {
+            if (!self::$app) self::start();
+            return self::$app;
+        }
+
+        public function container () { return $this->container; }
+        public function params () { return $this->params; }
+
+		private function __construct ()
+        {
+            // enable Error handling
             new ErrorHandler();
+
+            // container and registry
+            $this->container = new Container();
+            $this->params = Params::getInstance();
+            $this->setParams('params.php');
 
             // Connect to DB
             self::$db = DB::getInstance();
 
             // starting session
 			session_start();
-
-			// setting application props container
-			self::$registry = Registry::getInstance();
-
-			// setting application props (from config/params.php)
-			$this->setParams();
-
-			// send user to the page
-            Route::handle(REQUESTED_ROUTE);
 		}
 
-		private function setParams()
+        private function setParams($file)
         {
-            $params = require_once CONF . '/params.php';
-            if (!empty($params)) {
-                foreach ($params as $k => $v) {
-                    self::$registry->setProperty($k, $v);
+            $params = require_once CONF . '/' . $file;
+            if (!empty($params) && is_array($params)) {
+                foreach ($params as $key => $value) {
+                    $this->params->set($key, $value);
                 }
+            } else {
+                throw new Error('Invalid params given');
             }
-        }
-
-		public static function getRegistry ()
-        {
-            return self::$registry;
         }
 	}
 

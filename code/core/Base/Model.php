@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Core\Base;
 
 abstract class Model

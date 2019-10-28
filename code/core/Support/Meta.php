@@ -3,7 +3,6 @@
 
 namespace Core\Support;
 
-
 class Meta
 {
     private $title;
