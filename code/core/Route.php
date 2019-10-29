@@ -82,7 +82,6 @@ class Route
 
         // creating controller instance
         $controller = App::instance()->container()->get($controllerClass);
-        // TODO get controller with dependencies (method resolve())
         $action = $currentRoute['action'] . 'Action';
 
         // checking if method exists

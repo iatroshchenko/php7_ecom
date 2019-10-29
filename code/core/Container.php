@@ -4,21 +4,23 @@
 namespace Core;
 
 use Error;
-
+use mysql_xdevapi\Exception;
+use ReflectionClass;
+use Core\Exceptions\ContainerException;
 
 class Container
 {
-    private $components = [];
     /* Links component to class */
+    private $components = [];
 
-    private $instances = [];
     /* Links class to instance */
+    private $instances = [];
 
-    private $definitions = [];
     /* Links interface to class */
+    private $definitions = [];
 
-    private $bindings = [];
     /* Links class to callback */
+    private $bindings = [];
 
     public function __construct()
     {
@@ -63,10 +65,8 @@ class Container
     public function setComponent(string $name, string $class)
     {
         $this->components[$name] = $class;
-        /*
-         * Определяем имя для компонента
-         *  */
     }
+    /* Component */
 
     public function get(string $class)
     {
@@ -83,13 +83,58 @@ class Container
         return $this->resolve($class);
     }
 
-    private function resolve($key)
+    private function guardClassExists($class) {
+        if (!class_exists($class)) throw new ContainerException('No such class: ' . $class);
+    }
+
+    private function guardReflectorIsInstantiable(ReflectionClass $reflector) {
+        if (!$reflector->isInstantiable()) throw new ContainerException('No definition for not instantiable ' . $class);
+    }
+
+    private function guardNoPrimitivesInConstructor(ReflectionClass $reflector) {
+        $parameters = $reflector->getConstructor()->getParameters();
+        $nonClassParams = array_filter($parameters, function ($parameter) {
+            return !$parameter->getClass();
+        });
+        if (!empty($nonClassParams)) throw new ContainerException('Cannot instantiate class ' . $reflector->getName() . '. Primitive parameters in consturctor');
+    }
+
+    private function guardReflectionParameterNotRecursive(string $className, string $parameterClassName)
     {
-        return NULL;
-        /*
-         * TODO сделать нормальный resolve();
-         *
-         * */
+        if ($className == $parameterClassName) throw new ContainerException('Recursive injection of '. $className);
+    }
+
+    private function getReflectorConstructorArguments(ReflectionClass $reflector)
+    {
+        $arguments = [];
+        $parameters = $reflector->getConstructor()->getParameters();
+        if (empty($parameters)) return $arguments;
+        $className = $reflector->getName();
+        foreach($parameters as $parameter) {
+            $parameterClassName = $parameter->getClass()->getName();
+            $this->guardReflectionParameterNotRecursive($className, $parameterClassName);
+            $arguments[] = $this->get($parameterClassName);
+        }
+        return $arguments;
+    }
+
+    private function resolve($class)
+    {
+        $this->guardClassExists($class);
+
+        $reflector = new ReflectionClass($class);
+        $this->guardReflectorIsInstantiable($reflector);
+
+        $constructor = $reflector->getConstructor();
+        if ($constructor === null) return $reflector->newInstance();
+
+        $parameters = $constructor->getParameters();
+        if (empty($parameters)) return $reflector->newInstance();
+
+        $this->guardNoPrimitivesInConstructor($reflector);
+        $arguments = $this->getReflectorConstructorArguments($reflector);
+
+        return $reflector->newInstanceArgs($arguments);
     }
 
     public function bind(string $class, Callable $closure)

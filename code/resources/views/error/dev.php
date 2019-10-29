@@ -255,6 +255,7 @@
     <div class="error">
         <h1>500</h1>
         <h2>error (dev)</h2>
+        <h3><?= $errorClass; ?></h3>
         <p>
             <b><?= $errorText; ?></b> <br> (<?= $errorFile; ?> on Line <?= $errorLine; ?>)
         </p>

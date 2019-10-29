@@ -11,6 +11,8 @@ class MainController extends AppController
 {
     public function __construct(DB $db)
     {
+        parent::__construct();
+        $this->db = $db;
     }
 
     public function indexAction()

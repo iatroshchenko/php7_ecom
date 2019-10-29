@@ -36,7 +36,7 @@ class ErrorHandler
     {
         $this->log($e->getFile(), $e->getLine(), $e->getMessage());
         $this->display(
-            'Some num', $e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode()
+            '', $e->getMessage(), $e->getFile(), $e->getLine(), $e->getCode(), get_class($e)
         );
     }
 
@@ -50,9 +50,8 @@ class ErrorHandler
         );
     }
 
-    private function display ($errorCode, $errorText, $errorFile, $errorLine, $responseCode = 404)
+    private function display ($errno, $errorText, $errorFile, $errorLine, $responseCode = 404, $errorClass='')
     {
-        http_response_code($responseCode);
 //        if ($responseCode == 404 && !DEBUG) {
         if ($responseCode == 404) {
             require ERROR_TEMPLATES . '/404.php';
