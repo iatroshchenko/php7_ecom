@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Core\App;
 use Error;
 
 /**
@@ -79,11 +80,9 @@ class Route
             . ($currentRoute['prefix'] ? $currentRoute['prefix'] . '\\' : '')
             . ($currentRoute['controller'] ? $currentRoute['controller'] . 'Controller' : '');
 
-        // check if class exists
-        if (!class_exists($controllerClass)) throw new Error("No such controller: $controllerClass");
-
-        // if so, setting the action
-        $controller = new $controllerClass($currentRoute);
+        // creating controller instance
+        $controller = App::instance()->container()->get($controllerClass);
+        // TODO get controller with dependencies (method resolve())
         $action = $currentRoute['action'] . 'Action';
 
         // checking if method exists

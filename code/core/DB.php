@@ -7,9 +7,7 @@ use Error;
 
 class DB
 {
-    use SingletonTrait;
-
-    private function __construct()
+    public function __construct()
     {
         $db = require_once CONF . '/db.php';
         R::setup($db['dsn'], $db['user'], $db['password']);

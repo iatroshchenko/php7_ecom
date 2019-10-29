@@ -1,8 +1,8 @@
 <?php
 
-
 namespace Core\Base;
 
+use Core\Route;
 use Core\Support\Meta;
 
 abstract class Controller
@@ -19,10 +19,10 @@ abstract class Controller
         return $this->route;
     }
 
-    public function __construct(array $route)
+    public function __construct()
     {
-        $this->route = $route;
-        $this->template = $route['template'] ?? DEFAULT_TEMPLATE;
+        $this->route = Route::getCurrentRoute();
+        $this->template = $this->route['template'] ?? DEFAULT_TEMPLATE;
         $this->data = [];
     }
 

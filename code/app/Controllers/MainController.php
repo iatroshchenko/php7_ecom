@@ -5,9 +5,14 @@ namespace App\Controllers;
 use Core\Support\Meta;
 use RedBeanPHP\R;
 use Core\App;
+use Core\DB;
 
 class MainController extends AppController
 {
+    public function __construct(DB $db)
+    {
+    }
+
     public function indexAction()
     {
         $meta = new Meta([
@@ -21,7 +26,5 @@ class MainController extends AppController
 
         $posts = R::findAll('posts');
         $this->setData(compact('posts'));
-
-        dd(App::instance()->params());
     }
 }

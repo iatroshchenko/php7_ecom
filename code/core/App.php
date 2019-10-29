@@ -9,8 +9,6 @@
 	    private $container;
         private $params;
 
-        private static $db;
-
         public static function start()
         {
             self::$app = new self();
@@ -23,7 +21,7 @@
             return self::$app;
         }
 
-        public function container () { return $this->container; }
+        public function container() { return $this->container; }
         public function params () { return $this->params; }
 
 		private function __construct ()
@@ -35,9 +33,6 @@
             $this->container = new Container();
             $this->params = Params::getInstance();
             $this->setParams('params.php');
-
-            // Connect to DB
-            self::$db = DB::getInstance();
 
             // starting session
 			session_start();
