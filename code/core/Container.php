@@ -4,7 +4,6 @@
 namespace Core;
 
 use Error;
-use mysql_xdevapi\Exception;
 use ReflectionClass;
 use Core\Exceptions\ContainerException;
 
