@@ -1,6 +1,7 @@
 <?php
 
 use Core\DB;
+use Core\Cache;
 
 return [
     'definitions' => [
@@ -9,10 +10,14 @@ return [
     'singletons' => [
         DB::class => function () {
             return new DB();
+        },
+        Cache::class => function () {
+            return new Cache();
         }
     ],
     'components' => [
-        'db' => DB::class
+        'db' => DB::class,
+        'cache' => Cache::class
     ],
     'bindings' => [
 

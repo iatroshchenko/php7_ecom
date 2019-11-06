@@ -4,15 +4,19 @@ namespace App\Controllers;
 
 use Core\Support\Meta;
 use RedBeanPHP\R;
-use Core\App;
 use Core\DB;
+use Core\Cache;
 
 class MainController extends AppController
 {
-    public function __construct(DB $db)
+    public $cache;
+    public $db;
+
+    public function __construct(DB $db, Cache $cache)
     {
         parent::__construct();
         $this->db = $db;
+        $this->cache = $cache;
     }
 
     public function indexAction()

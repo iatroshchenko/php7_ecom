@@ -29,7 +29,7 @@
             // enable Error handling
             new ErrorHandler();
 
-            // container and registry
+            // DI container
             $this->container = new Container();
             $this->params = Params::getInstance();
             $this->setParams('params.php');
@@ -38,15 +38,17 @@
 			session_start();
 		}
 
+		private function guardParamsValid(array $params)
+        {
+            if (empty($params)) throw new Error('Application parameters are invalid!');
+        }
+
         private function setParams($file)
         {
             $params = require_once CONF . '/' . $file;
-            if (!empty($params) && is_array($params)) {
-                foreach ($params as $key => $value) {
-                    $this->params->set($key, $value);
-                }
-            } else {
-                throw new Error('Invalid params given');
+            $this->guardParamsValid($params);
+            foreach ($params as $key => $value) {
+                $this->params->set($key, $value);
             }
         }
 	}

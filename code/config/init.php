@@ -10,6 +10,10 @@ define('APP', ROOT . '/app');
 define('CORE', ROOT . '/core');
 define('STORAGE', ROOT . '/storage');
 define('CONF', ROOT . '/config');
+define('CACHE', STORAGE . '/cache');
+
+// files
+define('SERVICES_FILE', CONF . '/services.php');
 
 // templates
 define('RESOURCES', ROOT . '/resources');
